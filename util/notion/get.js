@@ -45,6 +45,7 @@ exports.getTechstacks = async () => {
     const append = {
       id: res.id,
       icon: res.icon,
+      updatedAt: res.last_edited_time,
     };
     Object.keys(res.properties).forEach((key) => {
       const pro = res.properties[key];

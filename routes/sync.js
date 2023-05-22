@@ -1,10 +1,12 @@
 const express = require("express");
 
-const { syncProjects } = require("../controllers/sync");
+const { syncProjects, syncTechstacks } = require("../controllers/sync");
 
 const router = express.Router();
 
 router.post("/project", syncProjects);
+
+router.post("/techstack", syncTechstacks);
 
 // // POST /v1/test
 // router.get("/test", verifyToken, tokenTest);
