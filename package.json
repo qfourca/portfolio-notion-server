@@ -4,11 +4,13 @@
   "description": "NodeBird API 서버",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app"
+    "start": "nodemon app",
+    "dev": "nodemon app"
   },
   "author": "Zero Cho",
   "license": "ISC",
   "dependencies": {
+    "@notionhq/client": "^2.2.5",
     "bcrypt": "^5.0.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",

@@ -16,6 +16,12 @@ class Project extends Sequelize.Model {
         thumbnail: {
           type: Sequelize.STRING,
         },
+        startAt: {
+          type: Sequelize.DATE,
+        },
+        endAt: {
+          type: Sequelize.DATE,
+        },
       },
       {
         sequelize,
@@ -27,7 +33,11 @@ class Project extends Sequelize.Model {
     );
   }
 
-  static associate(db) {}
+  static associate(db) {
+    db.Project.belongsToMany(db.Techstack, {
+      through: "TechstackNProject",
+    });
+  }
 }
 
 module.exports = Project;

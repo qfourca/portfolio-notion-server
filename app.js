@@ -50,6 +50,7 @@ app.use(passport.session());
 // app.use("/v1", v1);
 // app.use("/v2", v2);
 // app.use("/auth", authRouter);
+app.use("/sync", require("./routes/sync"));
 app.use("/", require("./routes/index"));
 
 app.use((req, res, next) => {
@@ -62,7 +63,7 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
   res.status(err.status || 500);
-  nunjucks.render("error");
+  res.render("error.html");
 });
 
 app.listen(app.get("port"), () => {

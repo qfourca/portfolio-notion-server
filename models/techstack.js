@@ -14,9 +14,14 @@ class Techstack extends Sequelize.Model {
           allowNull: false,
         },
         type: {
-          type: Sequelize.STRING,
+          type: Sequelize.ENUM(
+            "language",
+            "framework",
+            "library",
+            "tool",
+            "etc"
+          ),
           allowNull: false,
-          isIn: [["language", "framework", "library", "tool", "etc"]],
         },
         icon: {
           type: Sequelize.STRING,
@@ -32,7 +37,11 @@ class Techstack extends Sequelize.Model {
     );
   }
 
-  static associate(db) {}
+  static associate(db) {
+    db.Techstack.belongsToMany(db.Project, {
+      through: "TechstackNProject",
+    });
+  }
 }
 
 module.exports = Techstack;
