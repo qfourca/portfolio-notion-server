@@ -6,32 +6,39 @@ const sync = async (Model, id, updatedAt, info) => {
     where: {
       uuid: id,
     },
-    attributes: ["updatedAt"],
+    attributes: ["uuid", "updatedAt"],
   });
   if (find) {
     if (new Date(find.dataValues.updatedAt) < new Date(updatedAt)) {
-      await Model.update(
-        {
-          ...info,
-          uuid: id,
-          updatedAt,
-        },
-        {
-          where: {
+      return {
+        code: 1,
+        result: await Model.update(
+          {
+            ...info,
             uuid: id,
+            updatedAt,
           },
-        }
-      );
-      return 1;
+          {
+            where: {
+              uuid: id,
+            },
+          }
+        ),
+      };
     }
-    return 0;
+    return {
+      code: 0,
+      result: find,
+    };
   } else {
-    await Model.create({
-      ...info,
-      uuid: id,
-      updatedAt,
-    });
-    return 2;
+    return {
+      code: 2,
+      result: await Model.create({
+        ...info,
+        uuid: id,
+        updatedAt,
+      }),
+    };
   }
 };
 
@@ -53,11 +60,21 @@ exports.syncProjects = async (req, res) => {
         })();
       })
     );
-
+    await Promise.all(
+      results
+        .filter((v) => v.code >= req.body.relation ?? 1)
+        .map(({ result }) => {
+          return result.addTechstacks(
+            projects
+              .find(({ id }) => id === result.dataValues.uuid)
+              .techstack.relation.map(({ id }) => id)
+          );
+        })
+    );
     return res.status(200).json({
-      update: results.filter((v) => v === 1).length,
-      create: results.filter((v) => v === 2).length,
-      nothing: results.filter((v) => v === 0).length,
+      update: results.filter((v) => v.code === 1).length,
+      create: results.filter((v) => v.code === 2).length,
+      nothing: results.filter((v) => v.code === 0).length,
     });
   } catch (error) {
     console.error(error);
@@ -78,14 +95,25 @@ exports.syncTechstacks = async (req, res) => {
         return sync(Techstack, techstack.id, techstack.updatedAt, {
           title: title.plain_text,
           icon: "",
-          type: techstack.type[techstack.type.type].name,
+          type: type.name,
         });
       })
     );
+    await Promise.all(
+      results
+        .filter((v) => v.code >= req.body.relation ?? 1)
+        .map(({ result }) => {
+          return result.addProjects(
+            techstacks
+              .find(({ id }) => id === result.dataValues.uuid)
+              .relation.relation.map(({ id }) => id)
+          );
+        })
+    );
     return res.status(200).json({
-      update: results.filter((v) => v === 1).length,
-      create: results.filter((v) => v === 2).length,
-      nothing: results.filter((v) => v === 0).length,
+      update: results.filter((v) => v.code === 1).length,
+      create: results.filter((v) => v.code === 2).length,
+      nothing: results.filter((v) => v.code === 0).length,
     });
   } catch (error) {
     console.error(error);
