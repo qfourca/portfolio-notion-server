@@ -16,6 +16,7 @@ exports.getProjects = async () => {
     const append = {
       id: res.id,
       thumbnail: res.cover.file.url,
+      updatedAt: res.last_edited_time,
     };
 
     Object.keys(res.properties).forEach((key) => {
