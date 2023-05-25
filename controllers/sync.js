@@ -68,7 +68,7 @@ exports.syncProjects = async (req, res) => {
           const thumbnail = projects.find(
             ({ id }) => id === result.dataValues.uuid
           ).thumbnail;
-          return require("../util/s3/uploadFile").upload(
+          return require("../util/s3/uploadFile")(
             `${"project"}/${"thumbnail"}/${result.dataValues.uuid}`,
             thumbnail
           );
@@ -114,6 +114,21 @@ exports.syncTechstacks = async (req, res) => {
         });
       })
     );
+    await Promise.all(
+      results
+        .filter((v) => v.code >= req.body.file ?? 1)
+        .map(({ result }) => {
+          const tech = techstacks.find(
+            ({ id }) => id === result.dataValues.uuid
+          );
+          const icon = tech.icon.file.url;
+          return require("../util/s3/uploadFile")(
+            `${"techstack"}/${"icon"}/${result.dataValues.uuid}`,
+            icon
+          );
+        })
+    );
+
     await Promise.all(
       results
         .filter((v) => v.code >= req.body.relation ?? 1)
