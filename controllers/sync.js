@@ -60,6 +60,21 @@ exports.syncProjects = async (req, res) => {
         })();
       })
     );
+
+    await Promise.all(
+      results
+        .filter((v) => v.code >= req.body.file ?? 1)
+        .map(({ result }) => {
+          const thumbnail = projects.find(
+            ({ id }) => id === result.dataValues.uuid
+          ).thumbnail;
+          return require("../util/s3/uploadFile").upload(
+            `${"project"}/${"thumbnail"}/${result.dataValues.uuid}`,
+            thumbnail
+          );
+        })
+    );
+
     await Promise.all(
       results
         .filter((v) => v.code >= req.body.relation ?? 1)
