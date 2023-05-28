@@ -59,3 +59,5 @@ exports.syncProjects = async (req, res) => {
     });
   }
 };
+
+exports.listTechstacks = async () => {};
