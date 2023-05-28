@@ -23,9 +23,6 @@ class Techstack extends Sequelize.Model {
           ),
           allowNull: false,
         },
-        icon: {
-          type: Sequelize.STRING,
-        },
       },
       {
         sequelize,

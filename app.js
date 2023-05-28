@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const session = require("express-session");
 const nunjucks = require("nunjucks");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 dotenv.config();
 const { sequelize } = require("./models");
@@ -28,6 +29,7 @@ sequelize
     console.error(err);
   });
 
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());

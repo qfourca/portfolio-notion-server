@@ -13,9 +13,6 @@ class Project extends Sequelize.Model {
           type: Sequelize.STRING,
           allowNull: false,
         },
-        thumbnail: {
-          type: Sequelize.STRING,
-        },
         startAt: {
           type: Sequelize.DATE,
         },
