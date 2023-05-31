@@ -25,6 +25,7 @@
     "multer-s3": "^3.0.1",
     "mysql2": "^2.1.0",
     "node-fetch": "^2.6.11",
+    "notion-client": "^6.16.0",
     "nunjucks": "^3.2.1",
     "passport": "^0.6.0",
     "passport-kakao": "^1.0.0",

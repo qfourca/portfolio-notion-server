@@ -52,6 +52,7 @@ app.use(passport.session());
 // app.use("/v1", v1);
 // app.use("/v2", v2);
 // app.use("/auth", authRouter);
+app.use("/notion", require("./routes/notion"));
 app.use("/project", require("./routes/project"));
 app.use("/techstack", require("./routes/techstack"));
 app.use("/", require("./routes/index"));

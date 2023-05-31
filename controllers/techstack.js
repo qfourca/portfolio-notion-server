@@ -81,7 +81,7 @@ exports.listTechstacks = async (req, res) => {
     console.error(error);
     return res.status(500).json({
       code: 500,
-      message: "Server error occur at getTechstacks",
+      message: "Server error occur at listTechstacks",
     });
   }
 };

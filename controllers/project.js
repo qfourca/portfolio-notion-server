@@ -2,6 +2,8 @@ const { getProjects } = require("../util/notion/get");
 const { Project } = require("../models");
 const sync = require("../util/sync/sync");
 
+const generateS3Key = (uuid) => `${"project"}/${"thumbnail"}/${uuid}`;
+
 exports.syncProjects = async (req, res) => {
   try {
     const projects = await getProjects();
@@ -29,7 +31,7 @@ exports.syncProjects = async (req, res) => {
             ({ id }) => id === result.dataValues.uuid
           ).thumbnail;
           return require("../util/s3/uploadFile")(
-            `${"project"}/${"thumbnail"}/${result.dataValues.uuid}`,
+            generateS3Key(result.dataValues.uuid),
             thumbnail
           );
         })
@@ -60,4 +62,28 @@ exports.syncProjects = async (req, res) => {
   }
 };
 
-exports.listTechstacks = async () => {};
+exports.listProjects = async (req, res) => {
+  try {
+    const list = (
+      await Project.findAll({
+        attributes: ["uuid", "title", "startAt", "endAt"],
+      })
+    ).map((result) => result.dataValues);
+
+    const thumbnails = await Promise.all(
+      list.map((techstack) => {
+        return require("../util/s3/makeUrl")(generateS3Key(techstack.uuid));
+      })
+    );
+    for (let i = 0; i < list.length; i++) {
+      list[i].thumbnail = thumbnails[i];
+    }
+    return res.status(200).json(list);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      code: 500,
+      message: "Server error occur at listProjects",
+    });
+  }
+};
