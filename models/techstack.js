@@ -13,6 +13,10 @@ class Techstack extends Sequelize.Model {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        progress: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
         type: {
           type: Sequelize.ENUM(
             "language",

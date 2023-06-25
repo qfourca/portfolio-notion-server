@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app",
-    "dev": "nodemon app"
+    "dev": "nodemon app",
+    "prod": "set \"NODE_ENV=production\" && nodemon app"
   },
   "author": "Zero Cho",
   "license": "ISC",

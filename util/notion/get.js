@@ -5,6 +5,7 @@ const projectMatch = new Map([
   ["pjmR", "reward"],
   ["rnVx", "date"],
   ["title", "title"],
+  ["EKu%3B", "tag"],
 ]);
 
 exports.getProjects = async () => {
@@ -15,10 +16,9 @@ exports.getProjects = async () => {
   response.results.forEach((res) => {
     const append = {
       id: res.id,
-      thumbnail: res.cover.file.url,
+      thumbnail: res.cover ? res.cover.file.url : "",
       updatedAt: res.last_edited_time,
     };
-
     Object.keys(res.properties).forEach((key) => {
       const pro = res.properties[key];
       const get = projectMatch.get(pro.id);
@@ -35,6 +35,7 @@ const techstackMatch = new Map([
   ["title", "title"],
   ["of%5Ct", "type"],
   ["SJ%3FQ", "relation"],
+  ["MkcE", "progress"],
 ]);
 exports.getTechstacks = async () => {
   const response = await notion.databases.query({

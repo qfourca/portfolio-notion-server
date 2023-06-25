@@ -7,6 +7,7 @@ const generateS3Key = (uuid) => `${"techstack"}/${"icon"}/${uuid}`;
 exports.syncTechstacks = async (req, res) => {
   try {
     const techstacks = await getTechstacks();
+    console.log(techstacks);
     const results = await Promise.all(
       techstacks.map((techstack) => {
         const title = techstack.title[techstack.title.type][0];
@@ -15,6 +16,7 @@ exports.syncTechstacks = async (req, res) => {
           title: title.plain_text,
           icon: "",
           type: type.name,
+          progress: techstack.progress.number * 100,
         });
       })
     );

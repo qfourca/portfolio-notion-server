@@ -13,6 +13,15 @@ class Project extends Sequelize.Model {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        tag: {
+          type: Sequelize.ENUM(
+            "프로젝트",
+            "MDA 인턴 프로젝트",
+            "대표 프로젝트",
+            "토이 프로젝트"
+          ),
+          allowNull: true,
+        },
         startAt: {
           type: Sequelize.DATE,
         },

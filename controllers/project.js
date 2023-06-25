@@ -7,15 +7,16 @@ const generateS3Key = (uuid) => `${"project"}/${"thumbnail"}/${uuid}`;
 exports.syncProjects = async (req, res) => {
   try {
     const projects = await getProjects();
-
     const results = await Promise.all(
       projects.map((project) => {
         return (() => {
           const title = project.title[project.title.type][0];
+          if (title == null) return { code: -1 };
           const { start, end } = project.date[project.date.type];
           return sync(Project, project.id, project.updatedAt, {
             title: title.plain_text,
             thumbnail: "",
+            tag: project.tag.select.name,
             startAt: start,
             endAt: end,
           });
