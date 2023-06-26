@@ -67,7 +67,7 @@ exports.listProjects = async (req, res) => {
   try {
     const list = (
       await Project.findAll({
-        attributes: ["uuid", "title", "startAt", "endAt"],
+        attributes: ["uuid", "title", "startAt", "endAt", "tag"],
       })
     ).map((result) => result.dataValues);
 

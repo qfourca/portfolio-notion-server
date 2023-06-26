@@ -18,7 +18,7 @@ class Project extends Sequelize.Model {
             "프로젝트",
             "MDA 인턴 프로젝트",
             "대표 프로젝트",
-            "토이 프로젝트"
+            "LEGACY"
           ),
           allowNull: true,
         },
